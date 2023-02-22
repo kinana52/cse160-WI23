@@ -36,4 +36,4 @@ The dataset required to test the program is already generated. If you are intere
 
 ## Submission
 
-Submit the template.cu file on gradescope.
+Submit the template.cu file on gradescope. Preserve the file name and kernel function name as the kernel name is used to identify and time the kernel code.
