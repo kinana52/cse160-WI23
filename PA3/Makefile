@@ -3,6 +3,11 @@ all:	solution
 solution:	template.o
 		nvcc -o solution -lm -lcuda -lrt template.o ../libgputk/lib/libgputk.a 
 
+debug: 
+	nvcc -g -G -gencode arch=compute_60,code=sm_60 --compile template.cu -I ../libgputk/
+	nvcc -g -G -gencode arch=compute_60,code=sm_60 -o solution -lm -lcuda -lrt template.o ../libgputk/lib/libgputk.a
+
+
 template.o:	template.cu
 		nvcc --compile template.cu -I ../libgputk/
 

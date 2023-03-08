@@ -14,8 +14,6 @@ __global__ void conv_forward_kernel(float *y, const float *x, const float *k, co
 
     const int H_out = H - K + 1;
     const int W_out = W - K + 1;
-    (void)H_out; // silence declared but never referenced warning. remove this line when you start working
-    (void)W_out; // silence declared but never referenced warning. remove this line when you start working
 
 // An example use of these macros:
 // float a = y4d(0,0,0,0)
@@ -39,14 +37,34 @@ __host__ void GPUInterface::conv_forward_gpu_prolog(const float *host_y, const f
     // We pass double pointers for you to initialize the relevant device pointers,
     //  which are passed to the other two functions.
 
-    // Useful snippet for error checking
-    // cudaError_t error = cudaGetLastError();
-    // if(error != cudaSuccess)
-    // {
-    //     std::cout<<"CUDA error: "<<cudaGetErrorString(error)<<std::endl;
-    //     exit(-1);
-    // }
+    //allocating memory in GPU
+    const int H_out = H - K + 1;
+    const int W_out = W - K + 1;
+    cudaMalloc( (void**)device_y_ptr, sizeof(float)*H*W*C);
+    cudaMalloc( (void**)device_x_ptr, sizeof(float)*H_out*W_out*M); 
+    cudaMalloc( (void**)device_k_ptr, sizeof(float)*K*K);
 
+    // Useful snippet for error checking
+    cudaError_t error = cudaGetLastError();
+    if(error != cudaSuccess)
+    {
+        std::cout<<"CUDA error: "<<cudaGetErrorString(error)<<std::endl;
+        exit(-1);
+    }
+
+    //copy data to GPU ************WHY DOES THIS WORK FOR DOUBLE POINTER, USUALLY ITS SINGLE POINTER***************
+    cudaMemcpy(device_y_ptr, host_y, sizeof(float)*H*W*C, cudaMemcpyHostToDevice);
+    cudaMemcpy(device_x_ptr, host_x, sizeof(float)*H_out*W_out*M, cudaMemcpyHostToDevice);
+    cudaMemcpy(device_k_ptr, host_k, sizeof(float)*K*K, cudaMemcpyHostToDevice);
+
+
+    // Useful snippet for error checking
+    error = cudaGetLastError();
+    if(error != cudaSuccess)
+    {
+        std::cout<<"CUDA error: "<<cudaGetErrorString(error)<<std::endl;
+        exit(-1);
+    }
 }
 
 
@@ -58,9 +76,14 @@ __host__ void GPUInterface::conv_forward_gpu(float *device_y, const float *devic
 
 __host__ void GPUInterface::conv_forward_gpu_epilog(float *host_y, float *device_y, float *device_x, float *device_k, const int B, const int M, const int C, const int H, const int W, const int K)
 {
+    const int H_out = H - K + 1;
+    const int W_out = W - K + 1;
     // Copy the output back to host
-
+    cudaMemcpy(host_y, device_y, sizeof(float)*M*H_out*W_out, cudaMemcpyDeviceToHost);
     // Free device memory
+    cudaFree(device_y);
+    cudaFree(device_x);
+    cudaFree(device_k);
 }
 
 
