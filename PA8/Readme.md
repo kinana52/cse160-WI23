@@ -59,11 +59,11 @@ The accuracy of your implementation should meet the 0.886 that our implementatio
 
 ## Report
 
-In lieu of a quiz, you will submit a brief writeup detailing your optimizations, their motivations, pointers or copy of relevent code, and what they accomplish. This should not be long, but it should be instructive. Describe where in your code these optimizations exist and the effect that they had on the runtime. 
+In lieu of a quiz, you will submit a brief writeup detailing your optimizations, their motivations, pointers or copy of relevent code, and what they accomplish. This should not be more than 2 pages. Describe where in your code these optimizations exist and the effect that they had on the runtime. 
 
 ## Submission and Grading
 
-Submit the src/layer/custom/new-forward.cu file on gradescope as well as your writeup. This is the only file you should have modifed. The performance of your code will be the basis of 60% of the total grade on PA8, with the remaining 40% accounted for by your writeup. The top 25% performance students will receive full credit, and the remaining students will be assigned equal or less credit depending on performance compared to top 25%.  
+Submit the src/layer/custom/new-forward.cu file on gradescope as well as your writeup. This is the only file you should have modifed. The performance of your code will be the basis of 60% of the total grade on PA8, with the remaining 40% accounted for by your writeup. Students with times <= 20 ms will receive full credit. Apart from that, the top 16 students will receive bonus credit for PA8.
 
 ## Credit
 
