@@ -27,7 +27,7 @@ layer:		src/layer/conv.cc src/layer/ave_pooling.cc src/layer/conv_cpu.cc src/lay
 custom:
 		nvcc --compile src/layer/custom/cpu-new-forward.cc -o src/layer/custom/cpu-new-forward.o -I ../libgputk/ -I./
 		nvcc --compile src/layer/custom/gpu-utils.cu -o src/layer/custom/gpu-utils.o -I ../libgputk/ -I./
-		nvcc --compile src/layer/custom/new-forward.cu -o src/layer/custom/new-forward.o -I ../libgputk/ -I./
+		nvcc --compile src/layer/custom/new-forward.cu -G -g -o src/layer/custom/new-forward.o -I ../libgputk/ -I./
 
 loss:           src/loss/cross_entropy_loss.cc src/loss/mse_loss.cc
 		nvcc --compile src/loss/cross_entropy_loss.cc -o src/loss/cross_entropy_loss.o -I ../libgputk/ -I./
